@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>D3 Page Template</title>
-        <script type="text/javascript" src="d3.js"></script>
+        <script type="text/javascript" src="d3-1.js"></script>
     </head>
     <body>
         <script type="text/javascript">
@@ -16,13 +16,9 @@
 
             var dataset;  //Declare global var
 
-            d3.csv("food.csv", function(error, data) {
+            d3.csv("food.csv", rowConverter, function(data) {
 
-                if (error) {  //If error is not null, something went wrong.
-                    console.log(error);  //Log the error.
-                } else {      //If no error, the file loaded correctly. Yay!
-                    console.log(data);   //Log the data.
-                }
+                console.log(data);
                 //Hand CSV data off to global var,
                 //so it's accessible later.
                 dataset = data;
@@ -36,10 +32,10 @@
             function generateVisualization() {
                 var ol = d3.select("body").append("ol");
 
-                ol.selectAll("p")
+                ol.selectAll("li")
                     .data(dataset)
                     .enter()
-                    .append("p")
+                    .append("li")
                     .text(d => `${d.Food}: ${d.Deliciousness}`)
                     .style("color", function(d) {
                         if (d.Deliciousness > 5) {   //Threshold of 15
