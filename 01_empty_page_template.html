@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Page Template</title>
+        <script type="text/javascript" src="../d3.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            var rowConverter = function(d) {
+                return {
+                    Food: d.Food,
+                    Deliciousness: parseFloat(d.Deliciousness)
+                };
+            } // run for each row
+
+            var dataset;  //Declare global var
+
+            d3.csv("food.csv", rowConverter, function(data) {
+
+                //Hand CSV data off to global var,
+                //so it's accessible later.
+                dataset = data;
+
+                //Call some other functions that
+                //generate your visualization, e.g.:
+                generateVisualization();
+
+            });
+
+            function generateVisualization() {
+                var ol = d3.select("body").append("ol");
+
+                ol.selectAll("p")
+                    .data(dataset)
+                    .enter()
+                    .append("p")
+                    .text(d => `${d.Food}: ${d.Deliciousness}`)
+                    .style("color", function(d) {
+                        if (d.Deliciousness > 5) {   //Threshold of 15
+                            return "red";
+                        } else {
+                            return "black";
+                        }
+                    });
+            }
+        </script>
+    </body>
+</html>
